@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Payment Success - KVSIRai</title>
+</head>
+<body>
+  <h1>Payment Successful</h1>
+  <p>Thank you. Your payment was received.</p>
+
+  <p>Generating secure download link...</p>
+
+  <div id="download"></div>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const orderID = params.get("orderID");
+
+    fetch("https://YOUR_WORKER_URL/check?orderID=" + orderID)
+      .then(res => res.json())
+      .then(data => {
+        if(data.status === "OK") {
+          document.getElementById("download").innerHTML =
+            "<a href='" + data.download_url + "'>✅ Download Your File</a>";
+        } else {
+          document.getElementById("download").innerHTML =
+            "<p>Payment not verified yet. Please wait 1 minute and refresh.</p>";
+        }
+      });
+  </script>
+</body>
+</html>
